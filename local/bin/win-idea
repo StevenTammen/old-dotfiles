@@ -1,0 +1,5 @@
+#!/bin/bash
+
+winpath=$(wslpath -w $1)
+
+/mnt/c/Program\ Files/JetBrains/IntelliJ\ IDEA\ 2018.1.3/bin/idea64.exe $winpath

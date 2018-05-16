@@ -1,0 +1,7 @@
+#!/bin/bash
+
+winpath=$(wslpath -w $1)
+
+/mnt/c/Program\ Files/Typora/bin/typora.exe $winpath
+
+

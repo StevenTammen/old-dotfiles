@@ -1,0 +1,5 @@
+#!/bin/bash
+
+winpath=$(wslpath -w $1)
+
+/mnt/c/Program\ Files/JetBrains/PyCharm\ 2018.1.2/pycharm64.exe $winpath

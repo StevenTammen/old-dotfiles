@@ -1,0 +1,5 @@
+#!/bin/bash
+
+winpath=$(wslpath -w $1)
+
+/mnt/c/Users/steve/AppData/Local/emacs/bin/emacsclientw.exe $winpath

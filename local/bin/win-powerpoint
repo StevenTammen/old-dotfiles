@@ -1,0 +1,5 @@
+#!/bin/bash
+
+winpath=$(wslpath -w $1)
+
+/mnt/c/Program\ Files/Microsoft\ Office/root/Office16/POWERPNT.EXE $winpath
