@@ -1,0 +1,62 @@
+** About
+
+In the short term here I am using Ubuntu on the WSL. All of my keyboard remapping is currently being done through AutoHotkey, and Linux doesn't have any good equivalent at the moment. Running Linux through VirtualBox (and passing keystrokes through) works fine, but adds latency, and doesn't handle threading as well as the WSL does (although disk I/O performance is better... WSL is still quite slow here). Eventually I am planning to do everything in firmware (e.g., with QMK or TMK) and switch over to Linux, but in the meanwhile, here we are.
+
+** How stuff works
+
+So that I could just clone this repo and get everything up and running if I ever needed to set up again (or reset if I broke something), I created a bash script to backup (what would be) overlapping dotfiles in the home directory, and then symlink everything there.
+
+This present structure was modeled after the [[https://github.com/michaeljsmalley/dotfiles][dotfiles of Michael Smalley]], with ideas taken from [[http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/][his post on this topic]]. Thanks Michael!
+
+To use this repo, you might do something like the following
+
+#+BEGIN_SRC bash
+cd ~
+git clone https://github.com/StevenTammen/dotfiles.git
+cd dotfiles
+./setup
+#+END_SRC
+
+The script attempts to install fish, which is the shell I use at the moment. You can either =Ctrl-C= out of the script if you already have fish, or just let =apt= run and tell you that it is already installed.
+
+** wslpath
+
+These dotfiles use a program called [[https://github.com/laurent22/wslpath][wslpath]] to convert POSIX paths into Windows paths. At the time of writing (May 2018), at least on my WSL build, this is not part of the WSL by default, but my understanding is that it will be included eventually without any install necessary.
+
+Wslpath needs PHP, so to install it you might try something like the following:
+
+#+BEGIN_SRC bash
+sudo apt install php
+wget 'https://raw.githubusercontent.com/laurent22/wslpath/master/wslpath'
+chmod 755 wslpath
+sudo mv wslpath /usr/bin
+#+END_SRC
+
+** Opening files from ranger in Windows programs
+
+This was the trickiest part of my workflow. I wanted to use ranger to browse my files, but open files in Windows programs for performance reasons. But since the WSL accesses the Windows filesystem with =/mnt/c/=, editing [[https://github.com/StevenTammen/dotfiles/blob/master/config/ranger/rifle.conf][rifle.conf]] does not immediately work: attempting to open files will result in errors like "C:/mnt/c/path/to/file does not exist. Rawr!"
+
+I got around this by creating some bash scripts in =~/dotfiles/local/bin= (symlinked to =~/.local/bin=) that use wslpath to convert the paths and then call the Windows executables, passing in the filename as an argument.
+
+Currently, I handle the following filetypes, which are the ones relevant for me:
+
+- .org
+- .md
+- .java
+- .py
+- .doc
+- .docx
+- .ppt
+- .pptx
+- .xls
+- .xlsx
+- .pdf
+- .html
+
+You can see how this is done in [[https://github.com/StevenTammen/dotfiles/blob/master/config/ranger/rifle.conf][rifle.conf]]. An advantage of doing it this way is that I can now open stuff from the command line in the same way. For example, I can use commands like =win-word some.docx= and =win-sumatra some.pdf= without ever hopping into ranger.
+
+** Broken ranger behavior
+
+Due to my custom keyboard layout, I remapped the hjkl keys in ranger to tscr. This broke some stuff, and I haven't bothered coming up with fixes for everything since I haven't used ranger long enough to do some of the more advanced stuff.
+
+You can see what I changed from the default rc.conf file by searching for =#dif=, and what I am planning on getting around to by searching for =#todo=.
