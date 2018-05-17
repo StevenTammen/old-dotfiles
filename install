@@ -16,3 +16,6 @@ sudo apt install fish
 
 # Get oh-my-fish
 curl -L http://get.oh-my.fish | fish
+
+# Get ranger
+sudo apt install ranger
