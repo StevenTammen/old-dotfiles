@@ -10,7 +10,9 @@ chmod 755 wslpath
 sudo mv wslpath /usr/bin
 
 # Get fish
-sudo apt install fish
+sudo apt-add-repository ppa:fish-shell/release-2
+sudo apt update
+sudo apt-get install fish
 
 # Get oh-my-fish
 curl -L http://get.oh-my.fish | fish
