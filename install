@@ -2,6 +2,7 @@
 
 # Update before attempting install
 sudo apt update
+sudo apt upgrade
 
 # Get wslpath
 sudo apt install php
