@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Update before attempting install
+sudo apt update
+
+# Get wslpath
+sudo apt install php
+wget 'https://raw.githubusercontent.com/laurent22/wslpath/master/wslpath'
+chmod 755 wslpath
+sudo mv wslpath /usr/bin
+
+# Get fish
+sudo apt install fish
+
+# Get oh-my-fish
+curl -L http://get.oh-my.fish | fish
+
+# Get the pure theme for fish
+omf install pure
