@@ -1,22 +1,21 @@
 #!/bin/bash
 
 # Update before attempting install
-sudo apt update
-sudo apt upgrade
+sudo apt --yes --force-yes update
 
 # Get wslpath
-sudo apt install php
+sudo apt --yes --force-yes install php
 wget 'https://raw.githubusercontent.com/laurent22/wslpath/master/wslpath'
 chmod 755 wslpath
 sudo mv wslpath /usr/bin
 
 # Get fish
 sudo apt-add-repository ppa:fish-shell/release-2
-sudo apt update
-sudo apt install fish
+sudo apt --yes --force-yes update
+sudo apt --yes --force-yes install fish
 
 # Get oh-my-fish
 curl -L http://get.oh-my.fish | fish
 
 # Get ranger
-sudo apt install ranger
+sudo apt --yes --force-yes install ranger

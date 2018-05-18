@@ -1,31 +1,52 @@
 #!/bin/bash
-############################
+#a###########################
 # .make.sh
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
 ############################
 
 ########## Variables
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc config profile vimrc"    # list of files/folders to symlink in homedir
+dir=~/dotfiles/                    # dotfiles directory
+old_dir=~/dotfiles/old/            # old dotfiles backup directory
+
+bashrc=.bashrc                     # file/target pairs for dotfiles
+bashrc_t=~/
+
+vimrc=.vimrc
+vimrc_t=~/
+
+rcconf=rc.conf
+rcconf_t=~/.config/ranger/
+
+rifleconf=rifle.conf
+rifleconf_t=~/.config/ranger/
+
+initfish=init.fish
+initfish_t=~/.config/omf/
+
+declare -a files=($bashrc $vimrc $rcconf $rifleconf $initfish)
+declare -a targets=($bashrc_t $vimrc_t $rcconf_t $rifleconf_t $initfish_t)
 
 ##########
 
-# create dotfiles_old in homedir
-echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
-mkdir -p $olddir
+# create backup dotfiles directory
+echo -n "Creating $old_dir for backup of any existing dotfiles ..."
+mkdir -p $old_dir
 echo "done"
 
-# change to the dotfiles directory
+# change to the dotfiles directory if not already there
 echo -n "Changing to the $dir directory ..."
 cd $dir
 echo "done"
 
-# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
-for file in $files; do
-    echo "Moving any existing dotfiles from ~ to $olddir"
-    mv ~/.$file ~/dotfiles_old/
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+# backup existing dotfiles and symlink
+for (( i=0; i<${#files[@]}; i++ ));
+do
+    echo "Moving any existing dotfiles to $old_dir"
+    mv ${targets[$i]}${files[$i]} $old_dir
+    echo "Creating symlink to ${targets[$i]}${files[$i]}"
+    mkdir -p ${targets[$i]} && ln -s $dir${files[$i]} ${targets[$i]}${files[$i]}
 done
+
+
+
