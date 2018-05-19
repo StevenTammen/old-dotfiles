@@ -4,20 +4,26 @@ In the short term here I am using Ubuntu on the WSL. All of my keyboard remappin
 
 ** How stuff works
 
-So that I could just clone this repo and get everything up and running if I ever needed to set up again (or reset if I broke something), I created a bash script to backup (what would be) overlapping dotfiles in the home directory, and then symlink everything there.
+So that I could just clone this repo and get everything up and running if I ever needed to set up again (or reset if I broke something), I created a bash script to backup (what would be) overlapping dotfiles (storing them in ~/dotfiles/old), and then symlink all the dotfiles I use to their correct locations.
 
-This present structure was modeled after the [[https://github.com/michaeljsmalley/dotfiles][dotfiles of Michael Smalley]], with ideas taken from [[http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/][his post on this topic]]. Thanks Michael!
+This present structure was modeled initially after the [[https://github.com/michaeljsmalley/dotfiles][dotfiles of Michael Smalley]], with ideas taken from [[http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/][his post on this topic]]. Thanks Michael!
 
-To use this repo, you might do something like the following
+To use this repo, you might follow a procedure like the following:
+
+1. Install [[https://github.com/mintty/wsltty][wsltty]] and Ubuntu on the WSL
+2. Run the code below in wsltty
 
 #+BEGIN_SRC bash
 cd ~
 git clone https://github.com/StevenTammen/dotfiles.git
 cd dotfiles
+./install
 ./setup
 #+END_SRC
 
-The script attempts to install fish, which is the shell I use at the moment. You can either =Ctrl-C= out of the script if you already have fish, or just let =apt= run and tell you that it is already installed.
+You can obviously omit the install script if you already have PHP, wslpath, fish, oh-my-fish, and ranger installed. I tried to make it as automatic as possible (with =--yes= and =--force-yes=), but you'll still have to press =Enter= after the fish PPA and =Ctrl-D= out of the fish shell when it opens (so that the rest of the install script can execute).
+
+I bet there is a way to make these things fully automatic, but it's not worth my time. Feel free to send a PR if it's easy and you know how.
 
 ** wslpath
 
@@ -34,9 +40,9 @@ sudo mv wslpath /usr/bin
 
 ** Opening files from ranger in Windows programs
 
-This was the trickiest part of my workflow. I wanted to use ranger to browse my files, but open files in Windows programs for performance reasons. But since the WSL accesses the Windows filesystem with =/mnt/c/=, editing [[https://github.com/StevenTammen/dotfiles/blob/master/config/ranger/rifle.conf][rifle.conf]] does not immediately work: attempting to open files will result in errors like "C:/mnt/c/path/to/file does not exist. Rawr!"
+This was the trickiest part of my workflow. I wanted to use ranger to browse my files, but open files in Windows programs for performance reasons. But since the WSL accesses the Windows filesystem with =/mnt/c/=, editing [[https://github.com/StevenTammen/dotfiles/blob/master/rifle.conf][rifle.conf]] does not immediately work: attempting to open files will result in errors like "C:/mnt/c/path/to/file does not exist. Rawr!"
 
-I got around this by creating some bash scripts in =~/dotfiles/local/bin= (symlinked to =~/.local/bin=) that use wslpath to convert the paths and then call the Windows executables, passing in the filename as an argument.
+I got around this by creating some bash scripts in =~/dotfiles/bin= that use wslpath to convert the paths and then call the Windows executables, passing in the filename as an argument. (These get added to my Path when the fish shell starts up).
 
 Currently, I handle the following filetypes, which are the ones relevant for me:
 
@@ -53,9 +59,27 @@ Currently, I handle the following filetypes, which are the ones relevant for me:
 - .pdf
 - .html
 
-You can see how this is done in [[https://github.com/StevenTammen/dotfiles/blob/master/config/ranger/rifle.conf][rifle.conf]]. An advantage of doing it this way is that I can now open stuff from the command line in the same way. For example, I can use commands like =win-word some.docx= and =win-sumatra some.pdf= without ever hopping into ranger.
+You can see how this is done in [[https://github.com/StevenTammen/dotfiles/blob/master/rifle.conf][rifle.conf]]. An advantage of doing it this way is that I can now open stuff from the command line in the same way. For example, I can use commands like =win-word some.docx= and =win-sumatra some.pdf= without ever hopping into ranger.
 
-** Broken ranger behavior
+** Gotchas
+
+*** File names with spaces
+
+If your Windows file structure (that you are accessing with =/mnt/c/=) has spaces in file names and directory names, you're gonna have a bad time. Figuring out that I couldn't have spaces in file and/or directory names cost me like an hour of debugging and caused much pain and suffering. (I knew that you couldn't in Linux without causing problems, but it hadn't occurred to me that the mounted files would cause issues as well).
+
+You can turn spaces into underscores easily with this /bash/ (not fish) two-liner: [[https://stackoverflow.com/questions/2709458/how-to-replace-spaces-in-file-names-using-a-bash-script/2709514#2709514][hooray for StackOverflow]].
+
+*** Creation of files with win-app wrappers on WSL
+
+If you were in the directory =~/dir= and typed the command =emacs test.org= (given that you are creating the file =test.org=), you would expect Emacs to create the file =~/dir/test.org=.
+
+If you try to do the same thing with the =win-emacs= wrapper instead of the WSL =emacs=, the file you create will end up in a different directory. For me, Windows Emacs evidently defaults to =c:/Users/steve=. But this isn't =~/dir/=, so instead of =~/dir/test.org=, I get =c:/Users/steve/test.org=.
+
+This should not be a problem, since [[https://blogs.msdn.microsoft.com/commandline/2016/11/17/do-not-change-linux-files-using-windows-apps-and-tools/][you should not be editing WSL files on the Windows side of things]]. But I thought I'd point it out anyway.
+
+Everything works fine as long as you are accessing things through =/mnt/c/= like you're supposed to.
+
+*** Broken ranger behavior
 
 Due to my custom keyboard layout, I remapped the hjkl keys in ranger to tscr. This broke some stuff, and I haven't bothered coming up with fixes for everything since I haven't used ranger long enough to do some of the more advanced stuff.
 
