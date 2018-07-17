@@ -19,3 +19,6 @@ curl -L http://get.oh-my.fish | fish
 
 # Get ranger
 sudo apt --yes --force-yes install ranger
+
+# Get WSL C/C++ tools
+bash ./ubuntu_setup_env.sh
