@@ -6,7 +6,7 @@ hugo.exe new projects/$1.org
 
 # handle nested sections
 path="$(dirname "$1")"
-if [ -n "$path" ]; then # if nested
+if [ "$path" != "." ]; then # if nested
   # redefine HUGO_SECTION
   sed -i "s|projects|projects/$path|g" content/projects/$1.org
   # create nested section dir(s) in org/, if they don't exist
