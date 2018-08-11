@@ -19,8 +19,8 @@ alias stcr "cd /mnt/c/Users/steve/Desktop/Projects/steventammen.com; ranger"
 alias chc "cd /mnt/c/Users/steve/Desktop/Projects/chrya.com"
 alias chcr "cd /mnt/c/Users/steve/Desktop/Projects/chrya.com; ranger"
 
-alias hiem "cd /mnt/c/Users/steve/Desktop/Projects/hiem"
-alias hiemr "cd /mnt/c/Users/steve/Desktop/Projects/hieam; ranger"
+alias hieam "cd /mnt/c/Users/steve/Desktop/Projects/hieam"
+alias hieamr "cd /mnt/c/Users/steve/Desktop/Projects/hieam; ranger"
 
 alias ull "cd /mnt/c/Users/steve/Desktop/Projects/unicode-language-layers"
 alias ullr "cd /mnt/c/Users/steve/Desktop/Projects/unicode-language-layers; ranger"
