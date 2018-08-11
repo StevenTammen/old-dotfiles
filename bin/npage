@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# generate Org file from Hugo archetype
+hugo.exe new pages/$1.org
+
+
+# handle nested sections
+path="$(dirname "$1")"
+if [ -n "$path" ]; then # if nested
+  # redefine HUGO_SECTION
+  sed -i "s|pages|pages/$path|g" content/pages/$1.org
+  # create nested section dir(s) in org/, if they don't exist
+  path="org/pages/$path/"
+  mkdir -p "$path"
+  # redefine HUGO_BASE_DIR
+  path=$(echo "$path" | sed -r "s/[-a-zA-Z0-9_]+/../g")
+  sed -i "s|../../|$path|g" content/pages/$1.org
+fi
+
+
+# optionally specify categories and tags to populate at file creation.
+# assume that if categories are specified, tags will be as well
+if [ -n "$2" ]; then
+
+  argtype="none"
+  categories=""
+  tags=""
+
+  for var in "$@"
+  do
+
+    # skip first argument = path
+    [ "$var" = "$1" ] && continue
+
+    # otherwise, deal with categories and tags
+    if [ "$var" = "-c" ]; then
+      argtype="categories"
+    elif [ "$var" = "-t" ]; then
+      argtype="tags"
+    else
+      if [ "$argtype" = "categories" ]; then
+        categories="$categories \"${var}\""
+      elif [ "$argtype" = "tags" ]; then
+        tags="$tags \"${var}\""
+      fi
+    fi
+
+  done
+
+  sed -i "s|HUGO_CATEGORIES: |HUGO_CATEGORIES:$categories|g" content/pages/$1.org
+  sed -i "s|HUGO_TAGS: |HUGO_TAGS:$tags|g" content/pages/$1.org
+
+fi
+
+
+# move generated file to the Org directory for ox-hugo
+mv content/pages/$1.org org/pages/$1.org
+
+
+# automatically open in Emacs to start editing
+emacsclientw.exe org/pages/$1.org &
