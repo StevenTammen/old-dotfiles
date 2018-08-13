@@ -20,7 +20,7 @@ fi
 
 # optionally specify categories and tags to populate at file creation.
 # assume that if categories are specified, tags will be as well
-if [ -n "$2" ]; then
+if [ -n "$3" ]; then
 
   argtype="none"
   categories=""
@@ -29,8 +29,9 @@ if [ -n "$2" ]; then
   for var in "$@"
   do
 
-    # skip first argument = path
+    # skip irrelevant arguments
     [ "$var" = "$1" ] && continue
+    [ "$var" = "$2" ] && continue
 
     # otherwise, deal with categories and tags
     if [ "$var" = "-c" ]; then
@@ -52,10 +53,12 @@ if [ -n "$2" ]; then
 
 fi
 
+# make template use DOS line endings so as not to mix UNIX and DOS EOLs
+unix2dos content/links/$1.org
 
-# move generated file to the Org directory for ox-hugo
-mv content/links/$1.org org/links/$1.org
-
+# copy contents from draft and save to new file. Remove extra files.
+cat content/links/$1.org $2 > org/links/$1.org
+rm content/links/$1.org $2
 
 # automatically open in Emacs to start editing
 emacsclientw.exe org/links/$1.org &
