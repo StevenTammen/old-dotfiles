@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# generate Org file from Hugo archetype
+hugo.exe new drafts/$1.org
+mv content/drafts/$1.org org/drafts/$1.org
+
+# automatically open in Emacs to start writing
+emacsclientw.exe org/drafts/$1.org &

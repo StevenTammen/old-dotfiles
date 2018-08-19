@@ -29,9 +29,8 @@ if [ -n "$3" ]; then
   for var in "$@"
   do
 
-    # skip irrelevant arguments
+    # skip irrelevant first argument
     [ "$var" = "$1" ] && continue
-    [ "$var" = "$2" ] && continue
 
     # otherwise, deal with categories and tags
     if [ "$var" = "-c" ]; then
@@ -53,12 +52,21 @@ if [ -n "$3" ]; then
 
 fi
 
-# make template use DOS line endings so as not to mix UNIX and DOS EOLs
-unix2dos content/links/$1.org
+
+# Identify the draft, and prep it for concatenation by removing placeholder metadata
+# (i.e., the draft's #+TITLE, #+HUGO_BASE_DIR, etc.)
+fname="$(basename "$1")"
+sed -i '1,5d' org/drafts/$fname.org
+
 
 # copy contents from draft and save to new file. Remove extra files.
-cat content/links/$1.org $2 > org/links/$1.org
-rm content/links/$1.org $2
+cat content/links/$1.org org/drafts/$fname.org > org/links/$1.org
+rm content/links/$1.org org/drafts/$fname.org content/drafts/$fname.md
 
-# automatically open in Emacs to start editing
+
+# export to markdown after creation to allow for immediate previewing on http://localhost:1313/
+emacsclientw.exe -e "(progn (find-file \"org/links/$1.org\") (org-hugo-export-to-md) (kill-buffer))"
+
+
+# automatically open in Emacs to start proofreading before publication
 emacsclientw.exe org/links/$1.org &
