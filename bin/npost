@@ -10,11 +10,11 @@ if [ "$path" != "." ]; then # if nested
   # redefine HUGO_SECTION
   sed -i "s|posts|posts/$path|g" content/posts/$1.org
   # create nested section dir(s) in org/, if they don't exist
-  path="org/posts/$path/"
-  mkdir -p "$path"
+  orgpath="org/posts/$path/"
+  mkdir -p "$orgpath"
   # redefine HUGO_BASE_DIR
-  path=$(echo "$path" | sed -r "s/[-a-zA-Z0-9_]+/../g")
-  sed -i "s|../../|$path|g" content/posts/$1.org
+  pathtohugo=$(echo "$orgpath" | sed -r "s/[-a-zA-Z0-9_]+/../g")
+  sed -i "s|../../|$pathtohugo|g" content/posts/$1.org
 fi
 
 
@@ -62,6 +62,15 @@ sed -i '1,5d' org/drafts/$fname.org
 # copy contents from draft and save to new file. Remove extra files.
 cat content/posts/$1.org org/drafts/$fname.org > org/posts/$1.org
 rm content/posts/$1.org org/drafts/$fname.org content/drafts/$fname.md
+
+
+# if the draft had static assets (e.g., images), move them into an asset directory 
+# corresponding to the newly created webpage
+if [ -d "static/drafts/$fname/" ]; then
+  staticpath="static/posts/$path/"
+  mkdir -p "$staticpath"
+  mv static/drafts/$fname/ static/posts/$1/
+fi
 
 
 # export to markdown after creation to allow for immediate previewing on http://localhost:1313/
