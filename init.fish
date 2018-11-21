@@ -1,6 +1,9 @@
 # Add dotfiles/bin to PATH
 set PATH $PATH ~/dotfiles/bin
 
+# Also add ox-hugo-publish to PATH
+set PATH $PATH ~/dotfiles/bin/ox-hugo-publish/windows
+
 # Pretty colors. Toggle between day/night with sh scripts in dotfiles/bin
 day
 eval (dircolors -c ~/dotfiles/dir_colors | sed 's/>&\/dev\/null$//')
@@ -13,6 +16,9 @@ set EDITOR $VISUAL
 alias dbox "cd /mnt/c/Users/steve/Dropbox"
 alias dboxr "cd /mnt/c/Users/steve/Dropbox; ranger"
 
+alias pj "cd /mnt/c/Users/steve/Desktop/Projects"
+alias pjr "cd /mnt/c/Users/steve/Desktop/Projects; ranger"
+
 alias stc "cd /mnt/c/Users/steve/Desktop/Projects/steventammen.com"
 alias stcr "cd /mnt/c/Users/steve/Desktop/Projects/steventammen.com; ranger"
 
@@ -21,9 +27,6 @@ alias chcr "cd /mnt/c/Users/steve/Desktop/Projects/chrya.com; ranger"
 
 alias hieam "cd /mnt/c/Users/steve/Desktop/Projects/hieam"
 alias hieamr "cd /mnt/c/Users/steve/Desktop/Projects/hieam; ranger"
-
-alias ull "cd /mnt/c/Users/steve/Desktop/Projects/unicode-language-layers"
-alias ullr "cd /mnt/c/Users/steve/Desktop/Projects/unicode-language-layers; ranger"
 
 # Rsync aliases
 alias p1 "rsync -a --delete /mnt/c/Users/steve/Desktop/Projects/Tammen-Steven-p1/ tammen@nike.cs.uga.edu:/home/ugrads/tammen/Tammen-Steven-p1"

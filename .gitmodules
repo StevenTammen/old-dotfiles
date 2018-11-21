@@ -1,0 +1,3 @@
+[submodule "bin/ox-hugo-publish"]
+	path = bin/ox-hugo-publish
+	url = git@github.com:StevenTammen/ox-hugo-publish.git
