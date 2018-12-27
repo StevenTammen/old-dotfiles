@@ -6,7 +6,7 @@ set PATH $PATH ~/dotfiles/bin/ox-hugo-publish/windows
 
 # Pretty colors. Toggle between day/night with sh scripts in dotfiles/bin
 day
-eval (dircolors -c ~/dotfiles/dir_colors | sed 's/>&\/dev\/null$//')
+# eval (dircolors -c ~/dotfiles/dir_colors | sed 's/>&\/dev\/null$//')
 
 # Use vim as editor
 set VISUAL vim

@@ -7,9 +7,8 @@
 "                                                                            "
 " Sections:                                                                  "
 "   01. General ................. General Vim behavior                       "
-"   02. Remapping ............... Remapping Normal mode keys                 "
-"   03. Vim UI .................. User interface behavior                    "
-"   04. Text Formatting/Layout .. Text, tab, indentation related             "
+"   02. Vim UI .................. User interface behavior                    "
+"   03. Text Formatting/Layout .. Text, tab, indentation related             "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
@@ -19,36 +18,7 @@
 set nocompatible         " get rid of Vi compatibility mode. SET FIRST!
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 03. Remapping                                                              "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap t h
-nnoremap T H
-
-nnoremap s j
-
-nnoremap r l
-nnoremap R L
-
-nnoremap c k
-
-nnoremap h d
-nnoremap H D
-nnoremap hh dd
-
-nnoremap k s
-
-nnoremap l r
-nnoremap L R
-
-nnoremap d c
-nnoremap D C
-nnoremap dd cc
-
-nnoremap x t
-nnoremap X T
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 03. Vim UI                                                                 "
+" 02. Vim UI                                                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set number                " show line numbers
 set numberwidth=6         " make the number gutter 6 characters wide
@@ -63,7 +33,7 @@ set statusline=%<%f\%h%m%r%=%-20.(line=%l\ \ col=%c%V\ \ totlin=%L%)\ \ \%h%m%r%
 set visualbell
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 04. Text Formatting/Layout                                                 "
+" 03. Text Formatting/Layout                                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set autoindent            " auto-indent
 set tabstop=2             " tab spacing
